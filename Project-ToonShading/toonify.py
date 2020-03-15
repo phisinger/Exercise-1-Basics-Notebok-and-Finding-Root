@@ -1,24 +1,24 @@
 import cv2
 import numpy as np
 
-# Maybe a console inut would be useful to select the picture 
-img = cv2.imread("teapot_gray.jpg")
+# select the picture
+#img = cv2.imread("teapot_gray.png")
+#img = cv2.imread("car.jpeg")
+#img = cv2.imread("face.jpg")
+#img = cv2.imread("face2.jfif")
+#img = cv2.imread("dolphin.jpg")
+img = cv2.imread("teapot_white.png")
+
 
 # 1) Edges
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 gray = cv2.medianBlur(gray, 13)
 # Edge detection with canny
 edges = cv2.Canny(gray, 50, 80)
-
-# make the edge lines thicker
-kernel = np.ones((2,2),np.uint8)
-dilation = edges.copy()
-dilation = cv2.dilate(dilation, kernel, 1)
 # an invertation is necessairy to have black edges and not white ones
-dilation = (255-dilation)
+edges = (255-edges)
 
 # 2) Color stuff
-
 # smooth the colors within one color area
 color = img.copy()
 # It looks better without the bilateralFilter
@@ -34,7 +34,7 @@ Z = np.float32(Z)
 
 # define criteria, number of clusters(K) and apply kmeans()
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-K = 13
+K = 4
 ret,label,center=cv2.kmeans(Z,K,None,criteria,10,cv2.KMEANS_RANDOM_CENTERS)
 
 # Now convert back into uint8, and make original image
@@ -42,8 +42,8 @@ center = np.uint8(center)
 res = center[label.flatten()]
 color_res = res.reshape((color.shape))
 
-# 3) Combining the color images and the edges
-cartoon = cv2.bitwise_and(color_res, color_res, mask=dilation)
+# 3) Combining the color image and the edges
+cartoon = cv2.bitwise_and(color_res, color_res, mask=edges)
 
 
 
