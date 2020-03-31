@@ -2,11 +2,11 @@ import cv2
 import numpy as np
 
 # select the picture
-img = cv2.imread("teapot_gray.png")
+#img = cv2.imread("teapot_gray.png")
 #img = cv2.imread("car.jpeg")
 #img = cv2.imread("face.jpg")
 #img = cv2.imread("face2.jfif")
-#img = cv2.imread("dolphin.jpg")
+img = cv2.imread("dolphin.jpg")
 #img = cv2.imread("teapot_white.png")
 
 
